@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { getContract } from "../utils/veilVote";
 
-export default function RevealVote({ provider, contractAddress, abi, proposalId }) {
+export default function Reveal({ provider, contractAddress, abi, proposalId }) {
   const [vote, setVote] = useState(true);
   const [secret, setSecret] = useState("");
 
-  const revealVote = async () => {
+  const Reveal = async () => {
     if (!provider) return alert("Connect wallet first");
 
     const contract = getContract(provider, contractAddress, abi);
@@ -29,7 +29,7 @@ export default function RevealVote({ provider, contractAddress, abi, proposalId 
         <input value={secret} onChange={e => setSecret(e.target.value)} placeholder="0x..." />
       </label>
       <br />
-      <button onClick={revealVote}>Reveal Vote</button>
+      <button onClick={Reveal}>Reveal Vote</button>
     </div>
   );
 }
