@@ -42,7 +42,7 @@ export default function LandingPage() {
             <div>
               <h1 className="text-6xl font-bold text-gray-900 mb-6 leading-tight">
                 Your Vote.
-                <span className="block text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text">
+                <span className="block text-transparent bg-blue-700 gradient-to-r from-purple-600 to-blue-600 bg-clip-text">
                   Your Secret.
                 </span>
                 Always Protected.
@@ -55,9 +55,11 @@ export default function LandingPage() {
               </p>
               
               <div className="flex space-x-6">
-                <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Link href="/vote">
+                <button className="px-8 py-4 bg-blue-600 gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                   Start Voting Now
                 </button>
+                </Link>
                 <button 
                   onClick={() => setIsVideoPlaying(true)}
                   className="px-8 py-4 border-2 border-purple-600 text-purple-600 font-semibold rounded-lg hover:bg-purple-50 transition-all flex items-center space-x-2"
@@ -292,9 +294,11 @@ export default function LandingPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+             <Link href='/vote'>
               <button className="px-10 py-4 bg-white text-purple-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
                 Create Your First Poll
               </button>
+              </Link>
               <button className="px-10 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition-colors">
                 Read Documentation
               </button>
