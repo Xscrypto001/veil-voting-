@@ -1,219 +1,354 @@
-'use client'
-import { useState } from "react";
-import { Shield, Vote, Eye, Wallet, Lock, CheckCircle } from "lucide-react";
-import ConnectWallet from "../components/ConnectWallet";
-import CommitVote from "../components/CommitVote";
-import Reveal from "../components/RevealVote";
-import veilVoteAbi from "../abi/VeilVote.json";
+'use client';
 
-const CONTRACT_ADDRESS = "0xE9b643d567A8Ec775a678012CD2a63BEAeF8F102";
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import ConnectWallet from '../components/ConnectWallet';
 
-export default function Home() {
-  const [provider, setProvider] = useState(null);
-  const [activeTab, setActiveTab] = useState("commit");
+export default function LandingPage() {
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white gradient-to-br from-gray-900 to-black text-black">
-      {/* Background Decorative Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8 relative z-10">
-        {/* Header */}
-        <header className="mb-12 text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 -to-r from-purple-600 to-blue-600 rounded-2xl">
-            </div>
-            <h1 className="text-5xl font-bold -to-r from-purple-400 to-blue-400 text-black bg- clip-text text- transparent">
-              Veil Vote
-            </h1>
-          </div>
-          <p className="text-black y-400 max-w-2xl mx-auto text-lg">
-            A privacy-focused voting dApp that allows you to commit and reveal votes securely on-chain
-          </p>
-        </header>
-
-        <main className="max-w-6xl mx-auto">
-          {/* Connect Wallet Section */}
-          <div className="mb-12">
-            <div className="flex items-center gap-3 mb-6">
-              <Wallet className="w-6 h-6 text-purple-400" />
-              <h2 className="text-2xl font-semibold">Connect Wallet</h2>
-            </div>
-            <div className="w-48 w-12 bg- backdrop-blur-sm rounded-2xl  -gray-700 p-4">
-              <ConnectWallet 
-                onConnect={(address, prov) => setProvider(prov)}
-                className="max-w-md mx-auto"
-              />
-            </div>
-          </div>
-
-          {provider && (
-            <div className="space-y-12">
-              {/* Proposal Info Card */}
-              <div className="-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl  -gray-700 p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 -to-r from-purple-500/20 to-blue-500/20 rounded-lg">
-                    <Vote className="w-6 h-6 text-purple-400" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-semibold">Proposal #0</h2>
-                    <p className="text-black y-400">Governance Token Distribution</p>
-                  </div>
-                  <div className="ml-auto flex items-center gap-2 bg-green-500/20 text-green-400 px-4 py-2 rounded-full">
-                    <CheckCircle className="w-4 h-4" />
-                    <span className="text-sm font-medium">Active</span>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
-                  <div className="-800/40 rounded-xl p-4">
-                    <p className="text-black y-400 text-sm mb-1">Voting Period</p>
-                    <p className="text-lg font-semibold">7 Days</p>
-                  </div>
-                  <div className="-800/40 rounded-xl p-4">
-                    <p className="text-black y-400 text-sm mb-1">Total Votes</p>
-                    <p className="text-lg font-semibold">1,234</p>
-                  </div>
-                  <div className="-800/40 rounded-xl p-4">
-                    <p className="text-black y-400 text-sm mb-1">Quorum</p>
-                    <p className="text-lg font-semibold">65%</p>
-                  </div>
-                </div>
-                <div className="text-sm text-black y-400">
-                  <p>Vote securely with our two-phase commit-reveal system to ensure voter privacy.</p>
-                </div>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="relative pt-20 pb-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Navigation */}
+          <nav className="flex justify-between items-center mb-24">
+            <div className="flex items-center space-x-2">
+              <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">V</span>
               </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                VeilVote
+              </span>
+            </div>
+            
+            <div className="flex items-center space-x-8">
+              <Link href="#how" className="text-gray-700 hover:text-purple-600 transition-colors font-medium">
+                How it Works
+              </Link>
+              <Link href="#why" className="text-gray-700 hover:text-purple-600 transition-colors font-medium">
+                Why ZK
+              </Link>
+              <ConnectWallet onConnect={(address, provider) => {
+                console.log('Connected:', address);
+              }} />
+            </div>
+          </nav>
 
-              {/* Voting Interface */}
-              <div className="-900/60 backdrop-blur-sm rounded-2xl  -gray-700 overflow-hidden">
-                {/* Tab Navigation */}
-                <div className="flex -b -gray-800">
-                  <button
-                    onClick={() => setActiveTab("commit")}
-                    className={`flex-1 flex items-center justify-center gap-3 py-4 font-medium transition-all ${
-                      activeTab === "commit"
-                        ? "-to-r from-purple-600/20 to-blue-600/20 text-purple-400 -b-2 -purple-500"
-                        : "text-black y-400 hover:text-white hover:-800/50"
-                    }`}
-                  >
-                    <Lock className="w-5 h-5" />
-                    Commit Vote
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("reveal")}
-                    className={`flex-1 flex items-center justify-center gap-3 py-4 font-medium transition-all ${
-                      activeTab === "reveal"
-                        ? "-to-r from-purple-600/20 to-blue-600/20 text-purple-400 -b-2 -purple-500"
-                        : "text-black y-400 hover:text-white hover:-800/50"
-                    }`}
-                  >
-                    <Eye className="w-5 h-5" />
-                    Reveal Vote
-                  </button>
-                </div>
+          {/* Main Hero */}
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h1 className="text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                Your Vote.
+                <span className="block text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text">
+                  Your Secret.
+                </span>
+                Always Protected.
+              </h1>
+              
+              <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+                VeilVote revolutionizes digital voting with zero-knowledge proofs, 
+                ensuring your choices remain private while proving your vote was counted correctly. 
+                No compromises. No transparency.
+              </p>
+              
+              <div className="flex space-x-6">
+                <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  Start Voting Now
+                </button>
+                <button 
+                  onClick={() => setIsVideoPlaying(true)}
+                  className="px-8 py-4 border-2 border-purple-600 text-purple-600 font-semibold rounded-lg hover:bg-purple-50 transition-all flex items-center space-x-2"
+                >
+                  <span>▶</span>
+                  <span>See How It Works</span>
+                </button>
+              </div>
+            </div>
 
-                {/* Tab Content */}
-                <div className="p-8">
-                  {activeTab === "commit" ? (
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="p-2 -to-r from-purple-500/20 to-blue-500/20 rounded-lg">
-                          <Lock className="w-6 h-6 text-purple-400" />
+            {/* Interactive Demo Visualization */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-blue-100 rounded-3xl transform rotate-3"></div>
+              <div className="relative bg-white p-8 rounded-3xl shadow-2xl">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm font-medium text-gray-500">Your Vote</div>
+                    <div className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                      Encrypted
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 p-6 rounded-xl">
+                    <div className="text-2xl font-bold text-gray-900 mb-4">Cast Your Ballot</div>
+                    <div className="space-y-3">
+                      {['Yes', 'No', 'Abstain'].map((option, i) => (
+                        <div key={i} className="p-4 border border-gray-200 rounded-lg hover:border-purple-300 transition-colors cursor-pointer">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center">
+                                {i + 1}
+                              </div>
+                              <span className="font-medium">{option}</span>
+                            </div>
+                            <div className="text-xs text-gray-500">Select →</div>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-xl font-semibold">Commit Your Vote</h3>
-                          <p className="text-black y-400">Your vote is encrypted and stored securely</p>
-                        </div>
-                      </div>
-                      <CommitVote 
-                        provider={provider} 
-                        contractAddress={CONTRACT_ADDRESS} 
-                        abi={veilVoteAbi} 
-                        proposalId={0}
-                      />
-                      <div className="-800/40 rounded-xl p-4 mt-6">
-                        <p className="text-sm text-black y-400">
-                          <span className="font-semibold text-purple-400">Note:</span> Your vote is encrypted and cannot be seen by anyone until the reveal phase. You must reveal your vote later for it to count.
-                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="text-center text-sm text-gray-500">
+                    Your selection is transformed into a zero-knowledge proof
+                  </div>
+                  
+                  <div className="flex justify-center">
+                    <div className="animate-pulse">
+                      <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold">ZK</span>
                       </div>
                     </div>
-                  ) : (
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="p-2 -to-r from-purple-500/20 to-blue-500/20 rounded-lg">
-                          <Eye className="w-6 h-6 text-purple-400" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold">Reveal Your Vote</h3>
-                          <p className="text-black y-400">Decrypt and submit your committed vote</p>
-                        </div>
-                      </div>
-                      <Reveal 
-                        provider={provider} 
-                        contractAddress={CONTRACT_ADDRESS} 
-                        abi={veilVoteAbi} 
-                        proposalId={0}
-                      />
-                      <div className="-800/40 rounded-xl p-4 mt-6">
-                        <p className="text-sm text-black y-400">
-                          <span className="font-semibold text-purple-400">Note:</span> Only reveal votes that you've previously committed. Revealing reveals your choice publicly.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Status/Info Panel */}
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="-800/50 backdrop-blur-sm rounded-2xl  -gray-700 p-6">
-                  <h4 className="font-semibold mb-3 text-black y-300">How it works</h4>
-                  <ul className="space-y-3 text-sm text-black y-400">
-                    <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5"></div>
-                      <span>1. Commit your encrypted vote</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5"></div>
-                      <span>2. Wait for commit phase to end</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5"></div>
-                      <span>3. Reveal your vote during reveal phase</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="-800/50 backdrop-blur-sm rounded-2xl  -gray-700 p-6">
-                  <h4 className="font-semibold mb-3 text-black y-300">Current Phase</h4>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-lg font-semibold">Commit Phase</span>
                   </div>
-                  <div className="w-full -700 rounded-full h-2">
-                    <div className="-to-r from-purple-500 to-blue-500 h-2 rounded-full w-2/3"></div>
-                  </div>
-                  <p className="text-xs text-black y-500 mt-2">4 days 12 hours remaining</p>
-                </div>
-                <div className="-800/50 backdrop-blur-sm rounded-2xl  -gray-700 p-6">
-                  <h4 className="font-semibold mb-3 text-black y-300">Security</h4>
-                  <p className="text-sm text-black y-400">
-                    Your voting privacy is protected through cryptographic commitments. No one can see your vote until you choose to reveal it.
-                  </p>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        </div>
+      </section>
 
-          {/* Footer */}
-          <footer className="mt-16 pt-8 -t -gray-800 text-center">
-            <p className="text-black y-500 text-sm">
-              Built with ❤️ using Veil Protocol • Contract: {CONTRACT_ADDRESS.slice(0, 6)}...{CONTRACT_ADDRESS.slice(-4)}
+      {/* How It Works */}
+      <section id="how" className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              The Magic of Zero-Knowledge Voting
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Prove your vote was counted without revealing who you voted for
             </p>
-          </footer>
-        </main>
-      </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                step: '01',
+                title: 'Cast Encrypted Vote',
+                desc: 'Your vote is encrypted on-chain using advanced cryptography. Only you hold the key to decrypt it.',
+                icon: '🔒'
+              },
+              {
+                step: '02',
+                title: 'Generate ZK Proof',
+                desc: 'Create a mathematical proof that verifies your vote is valid without exposing your choice.',
+                icon: '📊'
+              },
+              {
+                step: '03',
+                title: 'Verify & Count',
+                desc: 'The network verifies your proof and counts your vote anonymously. Results are tamper-proof.',
+                icon: '✅'
+              }
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-8 rounded-2xl hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="text-4xl">{item.icon}</div>
+                  <div className="text-5xl font-bold text-gray-200">{item.step}</div>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why ZK */}
+      <section id="why" className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-8">
+                Why Zero-Knowledge Beats<br />
+                <span className="text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text">
+                  Traditional Voting
+                </span>
+              </h2>
+              
+              <div className="space-y-8">
+                {[
+                  {
+                    title: 'Complete Privacy',
+                    desc: 'No one can see your vote—not even the voting platform. True secret ballot achieved.',
+                    color: 'from-purple-500 to-purple-600'
+                  },
+                  {
+                    title: 'Mathematical Certainty',
+                    desc: 'Every vote is provably counted and valid, eliminating doubt about election integrity.',
+                    color: 'from-blue-500 to-blue-600'
+                  },
+                  {
+                    title: 'Resistance to Coercion',
+                    desc: 'Cannot prove who you voted for, protecting you from pressure and influence.',
+                    color: 'from-green-500 to-green-600'
+                  },
+                  {
+                    title: 'Transparent Counting',
+                    desc: 'While votes are private, the counting process is fully transparent and verifiable.',
+                    color: 'from-cyan-500 to-cyan-600'
+                  }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start space-x-4">
+                    <div className={`w-3 h-3 mt-2 rounded-full bg-gradient-to-r ${item.color}`}></div>
+                    <div>
+                      <h4 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h4>
+                      <p className="text-gray-600">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Comparison Table */}
+            <div className="bg-gray-50 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+                VeilVote vs Traditional Methods
+              </h3>
+              
+              <div className="space-y-6">
+                {[
+                  { feature: 'Vote Privacy', veilVote: '✓ Complete', traditional: '✗ Limited' },
+                  { feature: 'Verifiable Results', veilVote: '✓ Mathematical Proof', traditional: '✓ Manual Audit' },
+                  { feature: 'Coercion Resistance', veilVote: '✓ Built-in', traditional: '✗ Vulnerable' },
+                  { feature: 'Digital Convenience', veilVote: '✓ Instant', traditional: '✗ Physical Required' },
+                  { feature: 'Transparent Process', veilVote: '✓ Full Transparency', traditional: '✗ Opaque' }
+                ].map((row, i) => (
+                  <div key={i} className="grid grid-cols-3 gap-4 p-4 bg-white rounded-lg">
+                    <div className="font-medium text-gray-900">{row.feature}</div>
+                    <div className="text-green-600 font-semibold text-center">{row.veilVote}</div>
+                    <div className="text-red-600 font-semibold text-center">{row.traditional}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Use Cases */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Where VeilVote Shines Brightest
+            </h2>
+            <p className="text-xl text-gray-600">
+              Empowering communities and organizations with secure voting
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: '🏛️',
+                title: 'DAO Governance',
+                desc: 'Transparent yet private voting for decentralized organizations'
+              },
+              {
+                icon: '🏢',
+                title: 'Corporate Decisions',
+                desc: 'Anonymous shareholder and board voting'
+              },
+              {
+                icon: '🎓',
+                title: 'Academic Elections',
+                desc: 'Secure student government and faculty voting'
+              },
+              {
+                icon: '🌍',
+                title: 'Community Polls',
+                desc: 'Public opinion research without privacy concerns'
+              }
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-8 rounded-2xl text-center hover:shadow-xl transition-shadow">
+                <div className="text-5xl mb-6">{item.icon}</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                <p className="text-gray-600 text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="bg- gradient-to-r from-purple-600 to-blue-600 rounded-3xl p-12 text-white">
+            <h2 className="text-4xl text-black font-bold mb-6">
+              Ready to Vote with Confidence?
+            </h2>
+            <p className="text-xl mb-10 text-black  opacity-90">
+              Join the future of private, verifiable digital voting
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+              <button className="px-10 py-4 bg-white text-purple-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                Create Your First Poll
+              </button>
+              <button className="px-10 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white/10 transition-colors">
+                Read Documentation
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center space-x-2 mb-6 md:mb-0">
+              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">V</span>
+              </div>
+              <span className="text-xl font-bold text-gray-900">VeilVote</span>
+            </div>
+            
+            <div className="text-gray-600">
+              <p className="text-center md:text-right">
+                Built with ❤️ for a more private digital world
+              </p>
+              <p className="text-sm text-center md:text-right mt-2">
+                © {new Date().getFullYear()} VeilVote. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Video Modal */}
+      {isVideoPlaying && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-6">
+          <div className="bg-white rounded-2xl p-6 max-w-4xl w-full">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold">How VeilVote Works</h3>
+              <button 
+                onClick={() => setIsVideoPlaying(false)}
+                className="text-3xl hover:text-gray-600"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-6xl mb-4">🎬</div>
+                <p className="text-xl text-gray-600">Video explanation coming soon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
