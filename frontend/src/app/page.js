@@ -6,7 +6,7 @@ import CommitVote from "../components/CommitVote";
 import RevealVote from "../components/RevealVote";
 import veilVoteAbi from "../abi/VeilVote.json"; // from Stylus deploy
 
-const CONTRACT_ADDRESS = "0xYourDeployedContractAddress";
+const CONTRACT_ADDRESS = "0xE9b643d567A8Ec775a678012CD2a63BEAeF8F102";
 
 export default function Home() {
   const [provider, setProvider] = useState(null);
