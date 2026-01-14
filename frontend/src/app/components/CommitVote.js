@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getCommitmentHash, getContract } from "../utils/veilVote";
 
-export default function CommitVote({ provider, contractAddress, abi, proposalId }) {
+function CommitVote({ provider, contractAddress, abi, proposalId }) {
   const [vote, setVote] = useState(true);
   const [secret, setSecret] = useState("");
 
@@ -37,3 +37,6 @@ export default function CommitVote({ provider, contractAddress, abi, proposalId 
     </div>
   );
 }
+
+
+export default CommitVote;

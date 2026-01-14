@@ -1,7 +1,7 @@
 
 'use client'
 import { useState } from "react";
-import ConnectWallet from "@/components/ConnectWallet";
+import ConnectWallet from "../components/ConnectWallet";
 import CommitVote from "@/components/CommitVote";
 import Reveal from "../components/RevealVote";
 import veilVoteAbi from "@/abi/VeilVote.json"; // from Stylus deploy
