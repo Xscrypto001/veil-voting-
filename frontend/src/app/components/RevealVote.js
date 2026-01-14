@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getContract } from "../utils/veilVote";
 
-export default function Reveal({ provider, contractAddress, abi, proposalId }) {
+function Reveal({ provider, contractAddress, abi, proposalId }) {
   const [vote, setVote] = useState(true);
   const [secret, setSecret] = useState("");
 
@@ -33,3 +33,6 @@ export default function Reveal({ provider, contractAddress, abi, proposalId }) {
     </div>
   );
 }
+
+
+export default Reveal;

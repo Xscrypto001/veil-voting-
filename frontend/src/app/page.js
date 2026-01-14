@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ConnectWallet from "@/components/ConnectWallet";
 import CommitVote from "@/components/CommitVote";
-import Reveal from "@/components/RevealVote";
+import Reveal from "../components/RevealVote";
 import veilVoteAbi from "@/abi/VeilVote.json"; // from Stylus deploy
 
 const CONTRACT_ADDRESS = "0xE9b643d567A8Ec775a678012CD2a63BEAeF8F102";

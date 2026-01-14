@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 
-export default function ConnectWallet({ onConnect }) {
+function ConnectWallet({ onConnect }) {
   const [account, setAccount] = useState(null);
 
   const connectWallet = async () => {
@@ -26,3 +26,6 @@ export default function ConnectWallet({ onConnect }) {
     </div>
   );
 }
+
+
+export default ConnectWallet;
