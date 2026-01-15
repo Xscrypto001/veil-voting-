@@ -206,17 +206,3 @@ http://localhost:3000
 
 ---
 
-## License
-
-MIT License
-
----
-
-If you want, I can:
-
-* Split this into **two tailored READMEs** (contracts vs frontend)
-* Rewrite it in **grant-application tone**
-* Add a **“Why Arbitrum”** or **“Why ZK”** section
-* Add a **diagram description** section for judges
-
-Just tell me.
